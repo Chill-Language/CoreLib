@@ -1,0 +1,30 @@
+(+ 5 (- 7 8) ((func-creator +) 9 10))
+
+(+ 5 6 ...)
+(+ 7 8)
+
+(defunc f [n] ; Function
+  (? (= n 1)
+     n ; Comment
+     (+ (f (- n 1)))))
+
+(f 5)
+
+(defunc fact [n]
+  (? (= n 1)
+     n
+     (* n (fact (- n 1)))))
+
+(fact 5)
+
+(display "Hello World!")
+
+(regex R"( *)")
+
+(regex RR"( *)"RR)
+
+(display "\"Hello World!\"")
+
+(display Hello'xx)
+
+(display (eval '(+ 5 6)))
