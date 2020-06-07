@@ -24,53 +24,53 @@ namespace NodeStructure
 	class BlankNodeInfoType {};
 	class BlankTreeNodeInfoType {};
 
-	template <typename NodeInfoType = BlankNodeInfoType>
+	template <typename ElementType, typename TreeNodeInfoType, typename NodeInfoType>
 	struct Node;
-	template <typename ElementType, typename NodeInfoType = BlankNodeInfoType>
+	template <typename ElementType, typename TreeNodeInfoType, typename NodeInfoType>
 	struct ElementNode;
-	template <typename TreeNodeInfoType = BlankTreeNodeInfoType, typename NodeInfoType = BlankNodeInfoType>
+	template <typename ElementType, typename TreeNodeInfoType, typename NodeInfoType>
 	struct TreeNode;
-	template <typename NodeInfoType = BlankNodeInfoType>
+	template <typename ElementType, typename TreeNodeInfoType, typename NodeInfoType>
 	class NodePtr;
 
 
-	template <typename NodeInfoType>
+	template <typename ElementType, typename TreeNodeInfoType, typename NodeInfoType>
 	struct Node : NodeInfoType {
 
 	};
 
-	template <typename ElementType, typename NodeInfoType>
-	struct ElementNode : Node<NodeInfoType> {
+	template <typename ElementType, typename TreeNodeInfoType, typename NodeInfoType>
+	struct ElementNode : Node<ElementType, TreeNodeInfoType, NodeInfoType> {
 		template <typename... Args>
 		explicit ElementNode(Args&&... args) : data(std::forward<Args>(args)...) {}
 
 		ElementType data;
 	};
 
-	template <typename TreeNodeInfoType, typename NodeInfoType>
-	struct TreeNode : Node<NodeInfoType>, TreeNodeInfoType {
+	template <typename ElementType, typename TreeNodeInfoType, typename NodeInfoType>
+	struct TreeNode : Node<ElementType, TreeNodeInfoType, NodeInfoType>, TreeNodeInfoType {
 		template <typename... Args>
 		explicit TreeNode(Args&&... args) : TreeNodeInfoType(std::forward<Args>(args)...) {}
 
-		void setList(NodePtr<NodeInfoType>* data, std::size_t count) {
+		void setList(NodePtr<ElementType, TreeNodeInfoType, NodeInfoType>* data, std::size_t count) {
 			this->data = data;
 			this->count = count;
 		}
 
 		TreeNode(const TreeNode&) = delete;
 		TreeNode& operator=(const TreeNode&) = delete;
-		const NodePtr<NodeInfoType>* begin() const { return data; }
-		const NodePtr<NodeInfoType>* end() const { return data + count; }
+		const NodePtr<ElementType, TreeNodeInfoType, NodeInfoType>* begin() const { return data; }
+		const NodePtr<ElementType, TreeNodeInfoType, NodeInfoType>* end() const { return data + count; }
 
 		std::size_t count = 0;
-		NodePtr<NodeInfoType>* data = nullptr;
+		NodePtr<ElementType, TreeNodeInfoType, NodeInfoType>* data = nullptr;
 	};
 
-	template <typename NodeInfoType>
-	class NodePtr : public BindPtr<Node<NodeInfoType>, NodeType>
+	template <typename ElementType, typename TreeNodeInfoType, typename NodeInfoType>
+	class NodePtr : public BindPtr<Node<ElementType, TreeNodeInfoType, NodeInfoType>, NodeType>
 	{
 	public:
-		using Node = NodeStructure::Node<NodeInfoType>;
+		using Node = NodeStructure::Node<ElementType, TreeNodeInfoType, NodeInfoType>;
 	public:
 		NodePtr() = default;
 		NodePtr(const Node *data, NodeType property) : BindPtr<Node, NodeType>(data, property) {}

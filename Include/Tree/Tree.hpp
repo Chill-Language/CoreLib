@@ -16,9 +16,9 @@ template <typename ElementType, typename TreeNodeInfoType, typename NodeInfoType
 class Tree
 {
 public:
-	using NodePtr = NodeStructure::NodePtr<NodeInfoType>;
-	using ElementNode = NodeStructure::ElementNode<ElementType, NodeInfoType>;
-	using TreeNode = NodeStructure::TreeNode<TreeNodeInfoType, NodeInfoType>;
+	using NodePtr = NodeStructure::NodePtr<ElementType, TreeNodeInfoType, NodeInfoType>;
+	using ElementNode = NodeStructure::ElementNode<ElementType, TreeNodeInfoType, NodeInfoType>;
+	using TreeNode = NodeStructure::TreeNode<ElementType, TreeNodeInfoType, NodeInfoType>;
 
 public:
 	explicit Tree(NodePtr root)
