@@ -57,6 +57,9 @@ TokenTree Lexer::parse(std::istream &input, SourceData &sourceData, TreeAllocato
 			break;
 		default:
 			creator.addElementNode(allocator.allocElementNode(token));
+			if (creator.isDone()) {
+				is_over = true;
+			}
 		}
 	};
 

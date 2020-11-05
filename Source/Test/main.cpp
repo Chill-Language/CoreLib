@@ -49,8 +49,7 @@ auto test_create(const char *filename) -> ChillParser::TokenTree {
 
 	std::ifstream input(filename, std::ios::binary);
 
-
-	static ChillParser::MemoryListTreeAllocator<ChillParser::TokenTree> allocator; // TODO
+	ChillParser::SourceData source_data; // TODO
 
 	return ChillParser::Lexer::parse(input, source_data, allocator, offset, [](const ChillParser::Lexer::SubmitFunc &submit, ChillParser::SourceOffset &offset) {
 		return new ChillParser::TriggerHandler(submit, offset);
@@ -60,7 +59,8 @@ auto test_create(const char *filename) -> ChillParser::TokenTree {
 auto main(int argc, const char *argv[]) -> int {
 	//
 
-	class : public ChillParser::TreeWalker<ChillParser::TokenTree> {
+	class _ : public ChillParser::TreeWalker<ChillParser::TokenTree> {
+	public:
 		void visitElementNode(ElementNode& node) override {
 			std::cout << source_data.data.substr(node.data.begin, node.data.end - node.data.begin);
 		}
@@ -98,8 +98,9 @@ auto main(int argc, const char *argv[]) -> int {
 	}
 
 	while (true) {
-		auto tree = ChillParser::Lexer::parse(input, source_data, allocator, offset, [](const ChillParser::Lexer::SubmitFunc &submit, ChillParser::SourceOffset &offset) {
-			return new ChillParser::TriggerHandler(submit, offset);
+		auto tree = ChillParser::Lexer::parse(input, source_data, allocator, offset,
+			[](const ChillParser::Lexer::SubmitFunc &submit, ChillParser::SourceOffset &offset) {
+				return new ChillParser::TriggerHandler(submit, offset);
 		});
 		if (tree.root().isNull()) {
 			break;
